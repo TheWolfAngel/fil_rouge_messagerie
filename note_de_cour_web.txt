@@ -1,0 +1,85 @@
+cour 2 10-09-2026
+
+concep de site, interface web et prototype
+
+
+
+contexte p.4
+
+conception
+1) analyse des besoins
+2) architecture du site
+3) élaboration du visuel
+développement
+4) réalisation technique
+5) test et ajustements
+6) maintenance
+
+pourquoi concevoir et prototyper avant de programmer?
+-identifier les besoins réels
+-organiser le contenu et la navigation
+-programmer avec une vision claire
+-Faciliter la collaboration et communication pour le travail en équipe
+
+
+
+
+
+
+projet fil-rouge:une messagerie web et ajout d'une fonctionnalité libre
+
+1: soir et jour quand j'ai le temps
+2: planifier
+3: posser des question
+4: un peu chaotic 
+5: ?
+  
+fiche d'analyse des besoins pour notre projet Fil-rouge.
+-L'objectifs: principale, messagerie web 
+              secondaire, 1:emoji animer/ petite vidéo.
+                          2:personnaliser son propre interface (couleur, image, renommer les contacts)   
+                          3:possibiliter de créer des groupes
+                          4:acxais a une IA
+
+-Public cible: les jeune entre 12 et 18 ans. Bilie débile 15 ans étudiant.
+
+-Contraintes: pas d'images 18+ 
+
+entrer site/ inscription ou connection - chercher contac - trouver contac - si oui - envoyer messsage 
+                                                            - si non - créer contac 
+
+principe de conception d'interface
+un couleur neutre blanc ou gris pour que les utilisateur puisse le changer a leur gisez
+une icone qui grossi pour indiquer le chargement de la page.
+
+html: structure et contenu voici
+
+hyper text markup langage= html
+
+
+
+Cour 24/09/26
+projet libre: travailler son organisation, son autonomie et ses capacités de recherche
+-planifier, documenter et construire un projet complet
+
+info pratique:
+-40 points
+-en équipe de 2 à 4 personnes
+-essentiellement hors classe
+-3 dates importantes: 4et6 vérification du projet, 14 démo en direct du travail, 15 présentation asynchrone.
+
+thématique: choisir une idée d'un site web qui sera fonctionnel et choisir une ou plusieurs tech pour réaliser l'idée.
+
+livrable: 4-6 vérification et validation du proj proposition écrite
+4-15 conception et développement code sur git et documentation
+14 démonstration site web fonctionnel 
+
+validation du projet:
+objectif: valider l'idée, la tech et le plan de travail
+À soumettre: doc PDF sur Moodle, idée du proj, tech, lien vers le dépôt du proj et plan de travail
+
+
+
+
+
+
