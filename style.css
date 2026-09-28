@@ -1,0 +1,21 @@
+/* Style 2 : sombre */
+body {
+ font-family: "instrument-serif",
+monospace;
+ background-color: #fdfcfd88;
+ color: #080808;
+ text-align: center;
+ padding: 50px;
+}
+h1 {
+ color: #a31c91;
+ text-transform: uppercase;
+ letter-spacing: 2px;
+ font-size: 3em;
+ text-shadow: 2px 2px 4px #000;
+}
+p {
+ font-size: 1.2em;
+ font-style: italic;
+ color: #b0bec5;
+}

@@ -1,0 +1,18 @@
+/* Style 1 : classique */
+body {
+ font-family: "Helvetica Neue",
+Arial, sans-serif;
+ background-color: #fdf6e3;
+ color: #333;
+ margin: 40px;
+ line-height: 1.6;
+}
+h1 {
+ color: #268bd2;
+ font-size: 2.5em;
+ border-bottom: 2px solid #eee;
+ padding-bottom: 10px;
+}
+p {
+ font-size: 1.2em;
+}
