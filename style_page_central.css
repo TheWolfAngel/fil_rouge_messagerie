@@ -1,0 +1,60 @@
+/* ========================================
+   STYLE 1 : CLASSIQUE
+   ======================================== */
+
+body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background-color: #fdf6e3;
+    color: #333;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+
+/* ========================================
+   TITRE PRINCIPAL
+   ======================================== */
+
+h1 {
+    color: #268bd2;
+    font-size: 2.5em;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+
+/* ========================================
+   TEXTE
+   ======================================== */
+
+p {
+    font-size: 1.2em;
+}
+
+
+/* ========================================
+   CASES / SECTIONS
+   ======================================== */
+
+.section {
+    background-color: white;
+    border: 5px solid #ddd;
+    border-radius: 15px;
+    padding: 10px;
+    margin-bottom: 20px;
+
+    /* Petite ombre */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* ========================================
+   TITRE D'UNE SECTION
+   ======================================== */
+
+.section h2 {
+    color: #268bd2;
+    margin-top: 0;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+}
