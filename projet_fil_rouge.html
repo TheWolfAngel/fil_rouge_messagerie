@@ -63,12 +63,27 @@
   </aside>
      <section class="colonne-droite section">
             <h2>Conversation</h2>
-            <p class="message recu">salut.</p>
-            <p class="message recu">comment ca va ?</p>
-            <p class="message envoye">ca va bien.</p>
+            <div id="liste-messages">
+              <p class="message recu">salut.</p>
+              <p class="message recu">comment ca va ?</p>
+              <p class="message envoye">ca va bien.</p>
+            </div>
+
+            <form id="formulaire-message" class="barre-message">
+              <input type="text" id="champ-message"
+              placeholder="Ecris ton message..." autocomplete="off">
+                <button type="submit">Envoyer</button>
+
+        
+
+
+            </form>
+
             
         </section>
         </div>
+
+        <script src="messagerie.js"></script>
     </body>
   
 

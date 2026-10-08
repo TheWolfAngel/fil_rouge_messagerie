@@ -13,13 +13,11 @@ courriel.addEventListener("input",function(event){
     const estVide=valeur==="";
     const unArobase=valeur.includes("@");
 
-    console.log("courriel:"valeur);
+    console.log("courriel:",valeur);
     if(valeur===""){
         courrielMessage.textContent= "Le courriel est obligatoire.";
     }
-    else{
-        courrielMessage.textContent="";
-    }
+   
     else if(!unArobase){
         courrielMessage.textContent="le courriel n'est pas valide";
     }
