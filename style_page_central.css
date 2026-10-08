@@ -58,3 +58,81 @@ p {
     border-bottom: 1px solid #ddd;
     padding-bottom: 8px;
 }
+
+
+/* ===========================================
+    MISE EN PAGE : CONTACTS A GAUCHE, MESSAGES A DROITE
+    ========================================== */
+
+.messagerie {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+
+}
+
+.colonne-gauche {
+    width: 250px;
+    flex-shrink: 0;
+
+}
+
+.colonne-droite {
+    flex: 1;
+    min-height: 400px;
+
+}
+
+/* ========================================
+   LISTE DES CONTACTS
+   ======================================== */
+
+.liste-contacts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+}
+
+.liste-contacts button {
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: none;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+    font-size: 1em;
+    cursor: pointer;
+
+
+}
+
+.liste-contacts button:hover{
+    background-color: #268bd2;
+    color: white;
+}
+
+/* ========================================
+   BULLES DE MESSAGES
+   ======================================== */
+
+.message{
+    max-width: 60%;
+    padding: 8px 14px;
+    border-radius: 15px;
+    margin: 8px 0;
+}
+
+.message.recu{
+    background-color: #eee;
+
+}
+
+.message.envoye{
+    background-color: #268bd2;
+    color: white;
+    margin-left: auto;
+
+}
+
