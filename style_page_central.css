@@ -118,22 +118,22 @@ p {
    ======================================== */
 
 .message{
-    max-width: 60%;
-    padding: 8px 14px;
+    max-width: 70%;
+    padding: 10px;
     border-radius: 15px;
-    margin: 8px 0;
+    margin: 10px;
 }
 
 .message.recu{
-    background-color: #eee;
-
+    background-color: #e2e3e5;
+    margin-right: auto;
+    text-align: left;
 }
 
 .message.envoye{
     background-color: #268bd2;
-    color: white;
     margin-left: auto;
-
+    text-align: right;
 }
 
 /* ========================================
