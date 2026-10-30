@@ -84,7 +84,6 @@ async function chargerMessages() {
     if (!conversationActuelle || !listeMessages) {
         return;
     }
-
     // Récupérer les messages de la conversation
     const { data: messages, error } = await supabase
         .from("messages")
@@ -95,23 +94,62 @@ async function chargerMessages() {
         console.log("Erreur de chargement :", error.message);
         return;
     }
-
-    // Vider la liste
-    listeMessages.innerHTML = "";
-
-    // Afficher les messages
-    messages.forEach(function(message) {
-        const bulle = document.createElement("p");
-        bulle.className = "message";
-        if (message.expediteur_id === data.user.id) {
-            bulle.classList.add("envoye");
-        } else {
-            bulle.classList.add("recu");
-        }
-        bulle.textContent = message.contenu;
-        listeMessages.appendChild(bulle);
-    });
+    listeMessages.innerHTML="";
+    for (const message of messages) {
+    await afficherMessage(message);
 }
+    // Aller au message le plus récent
+    listeMessages.scrollTop = listeMessages.scrollHeight;
+}
+
+ // ========================================
+ // AFFICHER UN MESSAGE AVEC SON EXPÉDITEUR
+ // ========================================
+async function afficherMessage(message) {
+    const listeMessages = document.querySelector("#liste-messages");
+    const estMonMessage = message.expediteur_id === data.user.id;
+    const { data: profil, error } = await supabase
+        .from("profiles")
+        .select("nom")
+        .eq("id", message.expediteur_id)
+        .single();
+    if (error) {
+        console.log("Erreur de récupération du profil :", error.message);
+        return;
+    }
+    const conteneur = document.createElement("div");
+    conteneur.className = "conteneur-message";
+    if (estMonMessage) {
+        conteneur.classList.add("message-envoye");
+    } else {
+        conteneur.classList.add("message-recu");
+    }
+    const expediteur = document.createElement("p");
+    expediteur.className = "nom-expediteur";
+    if (estMonMessage) {
+        expediteur.textContent = "Moi";
+    } else {
+        expediteur.textContent = profil.nom;
+    }
+    const contenu = document.createElement("p");
+    contenu.className = "message";
+    contenu.textContent = message.contenu;
+    const heure = document.createElement("small");
+    heure.className = "heure-message";
+    const dateMessage = new Date(message.created_at);
+    heure.textContent = dateMessage.toLocaleString("fr-CA", {
+        day: "2-digit",
+        month: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+    conteneur.appendChild(expediteur);
+    conteneur.appendChild(contenu);
+    conteneur.appendChild(heure);
+    listeMessages.appendChild(conteneur);
+    listeMessages.scrollTop = listeMessages.scrollHeight;
+}
+
 
 
  // ========================================
@@ -137,19 +175,9 @@ async function ecouterMessages() {
                 table: "messages",
                 filter: "conversation_id=eq." + conversationActuelle
             },
-            function(payload) {
+            async function(payload) {
                 const message = payload.new;
-                const listeMessages =
-                    document.querySelector("#liste-messages");
-                const bulle = document.createElement("p");
-                bulle.className = "message";
-                if (message.expediteur_id === data.user.id) {
-                    bulle.classList.add("envoye");
-                } else {
-                    bulle.classList.add("recu");
-                }
-                bulle.textContent = message.contenu;
-                listeMessages.appendChild(bulle);
+                await afficherMessage(message);
             }
         )
         .subscribe();
