@@ -179,3 +179,32 @@ p {
    .barre-message button:hover{
     background-color: #1a6fa8;
    }
+
+   .liste-contacts button.actif {
+        background-color: #268bd2;
+        color: white;
+
+   }
+
+   .ajout-contact {
+    display: flex;
+    gap: 5px ;
+    margin: 10px 0;
+   }
+
+   .ajout-contact input{
+    flex: 1;
+    min-width: 0;
+    padding: 6px 10px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+   }
+
+   .ajout-contact button{
+    padding: 6px 10px ;
+    border: none;
+    border-radius: 10px;
+    background-color: #268bd2;
+    color: white;
+    cursor: pointer;
+   }

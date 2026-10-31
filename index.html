@@ -2,38 +2,51 @@
  <html>
 
   <head>
- <link rel="stylesheet" href="style.css">
+ 
 
    <meta charset="utf-8">
-   <title> connnection </title>
+   <title> Connexion </title>
    
-<meta name="descrition"
-      content="blabla">
-      <h1> Red ligne messagerie </h1>
+      <meta name="description"
+      content="Red ligne messagerie">
+
+      <link rel="stylesheet" href="style.css">
+      
   </head>
 
  <body>
-<form action="projet_fil_rouge.html"
-      method="get">
-      <label for="nom">Name:</label>
-      <input type="text" id="nom" name="nom">
-<br><br>
+<h1> Red ligne messagerie </h1>
 
-<label for="pwd">Mot de passe
-        </label>
-        <input type="password" id="pwd"
-        name="pwd">
-<br><br>
-            <label for="nom">age:</label>
-            <input type="date"
-           name="naissance">
-<br><br>
-      <input type="submit" value="Envoyer">
-      <br>
-</form>
+<div id="auth">
+      <h2 id="auth-titre">Connexion</h2>
+
+     <div id="champs-inscription" hidden>
+      <label for="username">Nom d'utilisateur :</label>
+      <input id="username" type="text" placeholder="Nom d'utilisateur (inscription)">
+      <br><br>
+
+      <label for="birthdate">Anniversaire (inscription) :</label>
+      <input id="birthdate" type="date">
+      <br><br>
+     </div>
+
+     <label for="email">Email UQAC :</label>
+      <input id="email" type="email" placeholder="prenom.nom@etu.uqac.ca">
+      <br><br>
+
+      <label for="password">Mot de passe :</label>
+      <input id="password" type="password" placeholder="Mot de passe (6 caractères min.)">
+      <br><br>
+
+      <button id="btn-signup">S'inscrire</button>
+      <button id="btn-login">Se connecter</button>
+      <p><a href="#" id="lien-mode">Pas de compte ? S'inscrire</a></p>
+      <p id="auth-message"></p>
+</div>  
+      <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+      <script src="supabase.js"></script>
+      <script src="authentiification.js"></script>   
  </body>
-     <footer>
-      <link rel="stylesheet" href="java_script.js">
-    </footer>
+     
     </html> 
 

@@ -25,15 +25,17 @@
           liste des contacts
         </h3>
         <details open>
-          <summary>
-            contacts
-          </summary>
-          <ul class="liste-contacts">
-             <li><button type="button">Alice</button></li>
-             <li><button type="button">Bob</button></li>
-             <li><button type="button">Roger</button></li>
-             <li><button type="button">Daniel</button></li>
+          <summary>contacts</summary>
 
+          <form id="form-ajout-contact" class="ajout-contact">
+            <input id="champ-ajout-contact" type="text" placeholder="Username à ajouter" autocomplete="off">
+            <button type="submit">Ajouter</button>
+          </form>
+          <p id="message-contact"></p>
+          
+          <ul class="liste-contacts" id="liste-contacts">
+            <li>Chargement...</li>
+            
           </ul>
         </details>
       
@@ -62,7 +64,7 @@
     </section>
   </aside>
      <section class="colonne-droite section">
-            <h2>Conversation</h2>
+            <h2 id="titre-conversation">Choisis un contact</h2>
             <div id="liste-messages">
               <p class="message recu">salut.</p>
               <p class="message recu">comment ca va ?</p>
@@ -82,8 +84,10 @@
             
         </section>
         </div>
-
-        <script src="messagerie.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+      <script src="supabase.js"></script>
+      <script src="messagerie.js"></script>
+       
     </body>
   
 
