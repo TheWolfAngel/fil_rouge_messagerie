@@ -236,3 +236,33 @@ p {
     margin-top: 15px;
     font-weight: bold;
 }
+
+
+/* Zone des réactions */
+.zone-reactions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 8px;
+}
+
+/* Boutons des réactions */
+.bouton-reaction {
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    padding: 3px 8px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    font-size: 0.85em;
+}
+
+.bouton-reaction:hover {
+    background-color: #ddd;
+}
+
+/* Réaction sélectionnée par l'utilisateur */
+.bouton-reaction.reaction-active {
+    background-color: #cce5ff;
+    border: 1px solid #268bd2;
+}
+
