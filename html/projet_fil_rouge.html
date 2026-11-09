@@ -29,14 +29,31 @@
         </h3>
         <details open>
           <summary>
-            contacts
+            mes contacts
+          </summary>
+
+          <!-- Ajouter un contact par son nom -->
+          <form id="form-ajout-contact" class="ajout-contact">
+            <input id="champ-ajout-contact" type="text" placeholder="Nom à ajouter" autocomplete="off">
+            <button type="submit">Ajouter</button>
+          </form>
+          <p id="message-contact"></p>
+
+          <ul class="liste-contacts" id="liste-mes-contacts">
+             <li>Chargement...</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>
+            tous les utilisateurs
           </summary>
           <ul class="liste-contacts" id="liste-contacts">
              <li>chargement des utilisateur...</li>
           </ul>
         </details>
-      
-       
+
+
         </div>
     </section>
 
@@ -46,9 +63,16 @@
         liste des salons
       </h2>
 
-        <p>
-        wikipedia lien
-      </p>
+      <!-- Créer un salon public -->
+      <form id="form-salon" class="ajout-contact">
+        <input id="champ-salon" type="text" placeholder="Nom du nouveau salon" autocomplete="off">
+        <button type="submit">Créer</button>
+      </form>
+      <p id="message-salon"></p>
+
+      <ul class="liste-contacts" id="liste-salons">
+        <li>Chargement...</li>
+      </ul>
       </div>
     </section>
     <section>

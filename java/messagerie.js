@@ -2,7 +2,7 @@
 import { supabase } from './supabase.js';
 
 // ========================================
-// ABONNEMENT AUX NOUVEAUX MESSAGES
+// ABONNEMENTS TEMPS RÉEL
 // ========================================
 let canalReactions = null;
 let canalMessages = null;
@@ -25,16 +25,47 @@ if (error || !data.user) {
         bienvenue.textContent = "Bienvenue, " + nom + " !";
     }
 
-    
+    // Mémoire id → nom (évite de redemander le même nom à chaque message)
+    const nomsUtilisateurs = {};
+    async function nomDe(id) {
+        if (nomsUtilisateurs[id]) {
+            return nomsUtilisateurs[id];
+        }
+        const { data: profil, error } = await supabase
+            .from("profiles")
+            .select("nom")
+            .eq("id", id)
+            .maybeSingle();
+        if (error || !profil) {
+            return "?";
+        }
+        nomsUtilisateurs[id] = profil.nom;
+        return profil.nom;
+    }
+
+    // Clé pour se souvenir de la dernière conversation ouverte
+    const cleDerniere = "derniereConversation-" + data.user.id;
+
+    // Mettre en bleu le contact ou le salon sélectionné
+    function marquerActif(bouton) {
+        document.querySelectorAll(".liste-contacts button").forEach(function(b) {
+            b.classList.remove("actif");
+        });
+        if (bouton) {
+            bouton.classList.add("actif");
+        }
+    }
+
  // ========================================
- // OUVRIR UNE CONVERSATION
+ // OUVRIR UNE CONVERSATION PRIVÉE
  // ========================================
 let conversationActuelle = null;
-async function ouvrirConversation(utilisateur) {
+async function ouvrirConversation(utilisateur, bouton) {
     const nomContact = document.querySelector("#nom-contact");
     const listeMessages = document.querySelector("#liste-messages");
     // Afficher le nom du contact
     nomContact.textContent = "Conversation avec " + utilisateur.nom;
+    marquerActif(bouton);
     // Effacer les anciens messages affichés
     listeMessages.innerHTML = "";
     // Chercher une conversation existante
@@ -72,6 +103,28 @@ async function ouvrirConversation(utilisateur) {
         conversationActuelle = nouvelleConversation.id;
         console.log("Nouvelle conversation créée :", conversationActuelle);
     }
+    // Se souvenir de cette conversation pour la rouvrir au prochain chargement
+    localStorage.setItem(cleDerniere, JSON.stringify({
+        type: "contact", id: utilisateur.id
+    }));
+    await chargerMessages();
+    await ecouterMessages();
+    await ecouterReactions();
+}
+
+ // ========================================
+ // OUVRIR UN SALON PUBLIC
+ // ========================================
+async function ouvrirSalon(salon, bouton) {
+    const nomContact = document.querySelector("#nom-contact");
+    const listeMessages = document.querySelector("#liste-messages");
+    nomContact.textContent = "# " + salon.nom;
+    marquerActif(bouton);
+    listeMessages.innerHTML = "";
+    conversationActuelle = salon.id;
+    localStorage.setItem(cleDerniere, JSON.stringify({
+        type: "salon", id: salon.id
+    }));
     await chargerMessages();
     await ecouterMessages();
     await ecouterReactions();
@@ -97,6 +150,10 @@ async function chargerMessages() {
         return;
     }
     listeMessages.innerHTML="";
+    if (messages.length === 0) {
+        listeMessages.innerHTML = '<p class="vide">Aucun message. Dis bonjour 👋</p>';
+        return;
+    }
     for (const message of messages) {
     await afficherMessage(message);
 }
@@ -104,21 +161,28 @@ async function chargerMessages() {
     listeMessages.scrollTop = listeMessages.scrollHeight;
 }
 
+// "14:32" aujourd'hui, sinon "28 oct. 14:32"
+function formaterHeure(dateTexte) {
+    const d = new Date(dateTexte);
+    const heure = d.toLocaleTimeString("fr-CA", { hour: "2-digit", minute: "2-digit" });
+    if (d.toDateString() === new Date().toDateString()) {
+        return heure;
+    }
+    return d.toLocaleDateString("fr-CA", { day: "numeric", month: "short" }) + " " + heure;
+}
+
  // ========================================
  // AFFICHER UN MESSAGE AVEC SON EXPÉDITEUR
  // ========================================
 async function afficherMessage(message) {
     const listeMessages = document.querySelector("#liste-messages");
-    const estMonMessage = message.expediteur_id === data.user.id;
-    const { data: profil, error } = await supabase
-        .from("profiles")
-        .select("nom")
-        .eq("id", message.expediteur_id)
-        .single();
-    if (error) {
-        console.log("Erreur de récupération du profil :", error.message);
-        return;
+    // Retirer le texte "Aucun message" s'il est affiché
+    const vide = listeMessages.querySelector(".vide");
+    if (vide) {
+        vide.remove();
     }
+    const estMonMessage = message.expediteur_id === data.user.id;
+    const nomExpediteur = estMonMessage ? "Moi" : await nomDe(message.expediteur_id);
     const conteneur = document.createElement("div");
     conteneur.className = "conteneur-message";
     conteneur.dataset.messageId = message.id;
@@ -129,23 +193,13 @@ async function afficherMessage(message) {
     }
     const expediteur = document.createElement("p");
     expediteur.className = "nom-expediteur";
-    if (estMonMessage) {
-        expediteur.textContent = "Moi";
-    } else {
-        expediteur.textContent = profil.nom;
-    }
+    expediteur.textContent = nomExpediteur;
     const contenu = document.createElement("p");
     contenu.className = "message";
     contenu.textContent = message.contenu;
     const heure = document.createElement("small");
     heure.className = "heure-message";
-    const dateMessage = new Date(message.created_at);
-    heure.textContent = dateMessage.toLocaleString("fr-CA", {
-        day: "2-digit",
-        month: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit"
-    });
+    heure.textContent = formaterHeure(message.created_at);
     //zone des reactions
     const zoneReactions= document.createElement("div");
     zoneReactions.className="zone-reactions";
@@ -162,9 +216,9 @@ async function afficherMessage(message) {
 }
 
  // ========================================
- // RECEVOIR LES MESSAGES EN TEMPS RÉEL
+ // RÉACTIONS EMOJI
  // ========================================
- 
+
 async function afficherReactions(message, zoneReactions) {
     const emojis = ["👍", "❤️", "😂", "😮", "😢", "🔥"];
     const { data: reactions, error } = await supabase
@@ -333,9 +387,126 @@ async function ecouterReactions() {
         .subscribe();
 }
 
+// Créer un bouton dans une liste (contact, utilisateur ou salon)
+function creerBouton(liste, texte, action) {
+    const element = document.createElement("li");
+    const bouton = document.createElement("button");
+    bouton.type = "button";
+    bouton.textContent = texte;
+    bouton.addEventListener("click", function() {
+        action(bouton);
+    });
+    element.appendChild(bouton);
+    liste.appendChild(element);
+    return bouton;
+}
+
+// Rouvrir automatiquement la dernière conversation ouverte (une seule fois)
+let dejaRouverte = false;
+function rouvrirSiDerniere(type, id, bouton, ouvrir) {
+    if (dejaRouverte) {
+        return;
+    }
+    let derniere = null;
+    try {
+        derniere = JSON.parse(localStorage.getItem(cleDerniere) || "null");
+    } catch (e) {
+        derniere = null;
+    }
+    if (derniere && derniere.type === type && derniere.id === id) {
+        dejaRouverte = true;
+        ouvrir(bouton);
+    }
+}
 
 // ========================================
-// AFFICHER LES AUTRES UTILISATEURS
+// MES CONTACTS (ajoutés par leur nom)
+// ========================================
+const listeMesContacts = document.querySelector("#liste-mes-contacts");
+async function afficherMesContacts() {
+    if (!listeMesContacts) {
+        return;
+    }
+    const { data: lignes, error } = await supabase
+        .from("contacts")
+        .select("contact_id")
+        .eq("proprietaire_id", data.user.id);
+    if (error) {
+        console.log("Erreur contacts :", error.message);
+        listeMesContacts.innerHTML = "<li>Impossible de charger tes contacts.</li>";
+        return;
+    }
+    if (lignes.length === 0) {
+        listeMesContacts.innerHTML = "<li>Aucun contact. Ajoute quelqu'un ci-dessus.</li>";
+        return;
+    }
+    // Récupérer les noms des contacts
+    const { data: contacts, error: erreurNoms } = await supabase
+        .from("profiles")
+        .select("id, nom")
+        .in("id", lignes.map(function(ligne) { return ligne.contact_id; }))
+        .order("nom");
+    if (erreurNoms) {
+        console.log("Erreur contacts :", erreurNoms.message);
+        listeMesContacts.innerHTML = "<li>Impossible de charger tes contacts.</li>";
+        return;
+    }
+    listeMesContacts.innerHTML = "";
+    contacts.forEach(function(contact) {
+        nomsUtilisateurs[contact.id] = contact.nom;
+        const ouvrir = function(b) { ouvrirConversation(contact, b); };
+        const bouton = creerBouton(listeMesContacts, contact.nom, ouvrir);
+        rouvrirSiDerniere("contact", contact.id, bouton, ouvrir);
+    });
+}
+
+// Ajouter un contact par son nom
+const formAjoutContact = document.querySelector("#form-ajout-contact");
+if (formAjoutContact) {
+    formAjoutContact.addEventListener("submit", async function(event) {
+        event.preventDefault();
+        const champAjout = document.querySelector("#champ-ajout-contact");
+        const messageContact = document.querySelector("#message-contact");
+        const nomCherche = champAjout.value.trim();
+        if (nomCherche === "") {
+            return;
+        }
+        // Chercher la personne par son nom (sans tenir compte des majuscules)
+        const { data: trouves, error } = await supabase
+            .from("profiles")
+            .select("id, nom")
+            .ilike("nom", nomCherche)
+            .neq("id", data.user.id);
+        if (error) {
+            messageContact.textContent = "Erreur : " + error.message;
+            return;
+        }
+        if (trouves.length === 0) {
+            messageContact.textContent = "Utilisateur introuvable.";
+            return;
+        }
+        if (trouves.length > 1) {
+            messageContact.textContent = "Plusieurs utilisateurs portent ce nom.";
+            return;
+        }
+        const { error: erreurAjout } = await supabase
+            .from("contacts")
+            .insert({ proprietaire_id: data.user.id, contact_id: trouves[0].id });
+        if (erreurAjout) {
+            // 23505 = déjà dans la liste
+            messageContact.textContent = erreurAjout.code === "23505"
+                ? trouves[0].nom + " est déjà dans tes contacts."
+                : "Erreur : " + erreurAjout.message;
+            return;
+        }
+        messageContact.textContent = trouves[0].nom + " a été ajouté ✅";
+        champAjout.value = "";
+        afficherMesContacts();
+    });
+}
+
+// ========================================
+// AFFICHER TOUS LES AUTRES UTILISATEURS
 // ========================================
 const listeContacts = document.querySelector("#liste-contacts");
 async function afficherUtilisateurs() {
@@ -361,18 +532,74 @@ async function afficherUtilisateurs() {
     }
     // Afficher chaque utilisateur
     utilisateurs.forEach(function(utilisateur) {
-        const element = document.createElement("li");
-        const bouton = document.createElement("button");
-        bouton.textContent = utilisateur.nom;
-        bouton.addEventListener("click", function() {
-           ouvrirConversation(utilisateur);
-        });
-        element.appendChild(bouton);
-        listeContacts.appendChild(element);
+        nomsUtilisateurs[utilisateur.id] = utilisateur.nom;
+        const ouvrir = function(b) { ouvrirConversation(utilisateur, b); };
+        const bouton = creerBouton(listeContacts, utilisateur.nom, ouvrir);
+        rouvrirSiDerniere("contact", utilisateur.id, bouton, ouvrir);
     });
 }
+
+// ========================================
+// SALONS PUBLICS
+// ========================================
+const listeSalons = document.querySelector("#liste-salons");
+async function afficherSalons() {
+    if (!listeSalons) {
+        return;
+    }
+    const { data: salons, error } = await supabase
+        .from("conversations")
+        .select("id, nom")
+        .eq("est_public", true)
+        .order("nom");
+    if (error) {
+        console.log("Erreur salons :", error.message);
+        listeSalons.innerHTML = "<li>Impossible de charger les salons.</li>";
+        return;
+    }
+    listeSalons.innerHTML = "";
+    if (salons.length === 0) {
+        listeSalons.innerHTML = "<li>Aucun salon. Crée le premier !</li>";
+        return;
+    }
+    salons.forEach(function(salon) {
+        const ouvrir = function(b) { ouvrirSalon(salon, b); };
+        const bouton = creerBouton(listeSalons, "# " + salon.nom, ouvrir);
+        rouvrirSiDerniere("salon", salon.id, bouton, ouvrir);
+    });
+}
+
+// Créer un salon
+const formSalon = document.querySelector("#form-salon");
+if (formSalon) {
+    formSalon.addEventListener("submit", async function(event) {
+        event.preventDefault();
+        const champSalon = document.querySelector("#champ-salon");
+        const messageSalon = document.querySelector("#message-salon");
+        const nomSalon = champSalon.value.trim();
+        if (nomSalon === "") {
+            return;
+        }
+        const { error } = await supabase
+            .from("conversations")
+            .insert({ nom: nomSalon, est_public: true, utilisateur_1: data.user.id });
+        if (error) {
+            // 23505 = un salon porte déjà ce nom
+            messageSalon.textContent = error.code === "23505"
+                ? "Ce salon existe déjà."
+                : "Erreur : " + error.message;
+            return;
+        }
+        messageSalon.textContent = "Salon « " + nomSalon + " » créé ✅";
+        champSalon.value = "";
+        afficherSalons();
+    });
+}
+
 // Lancer le chargement
+afficherMesContacts();
 afficherUtilisateurs();
+afficherSalons();
 
    // ========================================
    // DÉCONNEXION
@@ -387,14 +614,14 @@ afficherUtilisateurs();
          }
          window.location.href = "index.html";
          });
-         }    
+         }
 
     // ========================================
     // ENVOI DES MESSAGES
     // ========================================
     const formulaire = document.querySelector("#formulaire-message");
     const champ = document.querySelector("#champ-message");
-    
+
     if (formulaire && champ) {
         formulaire.addEventListener("submit", async function(event) {
             event.preventDefault();
@@ -403,7 +630,7 @@ afficherUtilisateurs();
                 return;
             }
             if(!conversationActuelle){
-                alert("veuillez d'abord sélectionner un contact.");
+                alert("veuillez d'abord sélectionner un contact ou un salon.");
                 return;
             }
             //message enregistrer

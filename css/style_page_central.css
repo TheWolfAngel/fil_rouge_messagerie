@@ -266,3 +266,48 @@ p {
     border: 1px solid #268bd2;
 }
 
+
+/* ========================================
+   AJOUT D'UN CONTACT / CRÉATION D'UN SALON
+   ======================================== */
+.ajout-contact {
+    display: flex;
+    gap: 5px;
+    margin: 10px 0;
+}
+
+.ajout-contact input {
+    flex: 1;
+    min-width: 0;
+    padding: 6px 10px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+}
+
+.ajout-contact button {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: #268bd2;
+    color: white;
+    cursor: pointer;
+}
+
+#message-contact,
+#message-salon {
+    font-size: 0.85em;
+    margin: 0 0 8px 0;
+}
+
+/* Contact ou salon sélectionné */
+.liste-contacts button.actif {
+    background-color: #268bd2;
+    color: white;
+}
+
+/* Conversation vide */
+#liste-messages .vide {
+    margin: auto;
+    color: #666;
+    font-style: italic;
+}
