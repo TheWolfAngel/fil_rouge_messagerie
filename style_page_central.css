@@ -140,8 +140,10 @@ p {
    BARRE POUR ECRIRE UN MESSAGE
    ======================================== */
 
-   #liste-message{
+   #liste-messages{
     min-height: 300px;
+    max-height: 450px;
+    overflow-y: auto;
    }
 
    .barre-message{
@@ -207,4 +209,17 @@ p {
     background-color: #268bd2;
     color: white;
     cursor: pointer;
+   }
+
+   /* Bulle avec l'heure en dessous */
+   .message {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+   }
+
+   .heure {
+    font-size: 0.7em;
+    opacity: 0.7;
+    align-self: flex-end;
    }

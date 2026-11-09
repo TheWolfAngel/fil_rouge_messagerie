@@ -49,9 +49,19 @@
         liste des salons
       </h2>
 
-        <p>
-        wikipedia lien
-      </p>
+      <!--Creer un salon public -->
+      <form id="form-salon" class="ajout-contact">
+        <input id="champ-salon" type="text" placeholder="Nom du nouveau salon" autocomplete="off">
+        <button type="submit">Creer</button>
+      </form>
+      <p id="mssage-salon"></p>
+
+      <ul class="liste-contacts" id="listte-salons">
+        <li>Chargement</li>
+      </ul>
+
+
+       
       </div>
     </section>
     <section>
@@ -66,9 +76,7 @@
      <section class="colonne-droite section">
             <h2 id="titre-conversation">Choisis un contact</h2>
             <div id="liste-messages">
-              <p class="message recu">salut.</p>
-              <p class="message recu">comment ca va ?</p>
-              <p class="message envoye">ca va bien.</p>
+              <p>Choisis un contact à gauche, ou ajoute quelqu'un avec son username.</p>
             </div>
 
             <form id="formulaire-message" class="barre-message">
