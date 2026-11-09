@@ -1,51 +1,45 @@
 <!doctype html>
- <html>
+ <html lang="fr">
 
-  <head>
- 
-
+<head>
    <meta charset="utf-8">
-   <title> Connexion </title>
+
+   <title> connnection </title>
+
+   <meta name="description" content="page de connexion a la messagerie">
    
-      <meta name="description"
-      content="Red ligne messagerie">
+   <link rel="stylesheet" href="style.css">
+</head>
 
-      <link rel="stylesheet" href="style.css">
+<body>
+   <h1> Red ligne messagerie </h1>
+  <form id="formulaire-connexion">
+
+      <label for="courriel">Adresse courriel :</label>
+        <input type="email" id="courriel" placeholder="prenom.nom@etu.uqac.ca" required>
+        <br><br>
+ 
+      <label for="nom">Name:</label>
+      <input type="text" id="nom" name="nom" required>
+   <br><br>
+
+  <label for="pwd">Mot de passe</label>
+  <input type="password" id="pwd" name="pwd" required>
+
+      <br><br>
+            <label for="nom">Date de naissance:</label>
+            <input type="date" id="naissance" name="naissance" required>
+      <br><br>
+
+      <button type="submit">Créer un compte</button>
       
-  </head>
+       <button type="button" id="bouton-connexion">
+        Se connecter
+    </button>
 
- <body>
-<h1> Red ligne messagerie </h1>
+  </form>
 
-<div id="auth">
-      <h2 id="auth-titre">Connexion</h2>
-
-     <div id="champs-inscription" hidden>
-      <label for="username">Nom d'utilisateur :</label>
-      <input id="username" type="text" placeholder="Nom d'utilisateur (inscription)">
-      <br><br>
-
-      <label for="birthdate">Anniversaire (inscription) :</label>
-      <input id="birthdate" type="date">
-      <br><br>
-     </div>
-
-     <label for="email">Email UQAC :</label>
-      <input id="email" type="email" placeholder="prenom.nom@etu.uqac.ca">
-      <br><br>
-
-      <label for="password">Mot de passe :</label>
-      <input id="password" type="password" placeholder="Mot de passe (6 caractères min.)">
-      <br><br>
-
-      <button id="btn-valider">Se connecter</button>
-      <p><a href="#" id="lien-mode">Pas de compte ? S'inscrire</a></p>
-      <p id="auth-message"></p>
-</div>  
-      <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-      <script src="supabase.js"></script>
-      <script src="authentiification.js"></script>   
- </body>
-     
-    </html> 
-
+  <script type="module" src="connexion.js"></script>
+  
+</body>
+ </html> 

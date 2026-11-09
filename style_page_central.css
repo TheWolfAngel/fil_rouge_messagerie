@@ -118,108 +118,196 @@ p {
    ======================================== */
 
 .message{
-    max-width: 60%;
-    padding: 8px 14px;
+    max-width: 70%;
+    padding: 10px;
     border-radius: 15px;
-    margin: 8px 0;
+    margin: 10px;
 }
 
 .message.recu{
-    background-color: #eee;
-
+    background-color: #e2e3e5;
+    margin-right: auto;
+    text-align: left;
 }
 
 .message.envoye{
     background-color: #268bd2;
-    color: white;
     margin-left: auto;
-
+    text-align: right;
 }
 
 /* ========================================
    BARRE POUR ECRIRE UN MESSAGE
    ======================================== */
 
-   #liste-messages{
-    min-height: 300px;
-    max-height: 450px;
-    overflow-y: auto;
-   }
-
-   .barre-message{
+/* Conteneur général des messages */
+#liste-messages {
     display: flex;
+    flex-direction: column;
+    padding: 10px;
     gap: 10px;
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid #ddd;
 
-   }
+    height: 500px;
+    overflow-y: auto;
 
-   .barre-message input{
-    flex: 1;
-    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+/* Bulle de message */
+.conteneur-message {
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 65%;
+    overflow-wrap: anywhere;
+}
+
+/* Mes messages */
+.message-envoye {
+    background-color: #cce5ff;
+    margin-left: auto;
+    text-align: right;
+    border-bottom-right-radius: 3px;
+}
+
+/* Messages des autres */
+.message-recu {
+    background-color: #e2e3e5;
+    margin-right: auto;
+    text-align: left;
+    border-bottom-left-radius: 3px;
+}
+
+/* Nom de l'expéditeur */
+.nom-expediteur {
+    font-size: 0.85em;
+    font-weight: bold;
+    color: #333;
+    margin: 0 0 5px 0;
+}
+
+/* Texte du message */
+.conteneur-message .message {
+    margin: 0;
+    color: #222;
+}
+
+/* Heure d'envoi */
+.heure-message {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.75em;
+    color: #666;
+}
+
+/* ========================================
+   PROFIL
+   ======================================== */
+/* Champs du profil */
+.champ-profil {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    gap: 5px;
+}
+
+.champ-profil input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
     font-size: 1em;
-    border: 2px solid #ddd;
-    border-radius: 20px;
-    outline: none;
-   }
+}
 
-   .barre-message input:focus{
-    border-color: #268bd2;
-   }
-
-   .barre-message button{
-    padding: 10px 20px;
-    font-size: 1em;
+/* Bouton de sauvegarde */
+#formulaire-profil button {
+    padding: 10px 15px;
     border: none;
-    border-radius: 20px;
+    border-radius: 5px;
     background-color: #268bd2;
     color: white;
     cursor: pointer;
-   }
+}
 
-   .barre-message button:hover{
-    background-color: #1a6fa8;
-   }
+#formulaire-profil button:hover {
+    background-color: #1769aa;
+}
 
-   .liste-contacts button.actif {
-        background-color: #268bd2;
-        color: white;
+/* Message de confirmation */
+#message-profil {
+    margin-top: 15px;
+    font-weight: bold;
+}
 
-   }
 
-   .ajout-contact {
+/* Zone des réactions */
+.zone-reactions {
     display: flex;
-    gap: 5px ;
-    margin: 10px 0;
-   }
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 8px;
+}
 
-   .ajout-contact input{
+/* Boutons des réactions */
+.bouton-reaction {
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    padding: 3px 8px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    font-size: 0.85em;
+}
+
+.bouton-reaction:hover {
+    background-color: #ddd;
+}
+
+/* Réaction sélectionnée par l'utilisateur */
+.bouton-reaction.reaction-active {
+    background-color: #cce5ff;
+    border: 1px solid #268bd2;
+}
+
+
+/* ========================================
+   AJOUT D'UN CONTACT / CRÉATION D'UN SALON
+   ======================================== */
+.ajout-contact {
+    display: flex;
+    gap: 5px;
+    margin: 10px 0;
+}
+
+.ajout-contact input {
     flex: 1;
     min-width: 0;
     padding: 6px 10px;
     border: 2px solid #ddd;
     border-radius: 10px;
-   }
+}
 
-   .ajout-contact button{
-    padding: 6px 10px ;
+.ajout-contact button {
+    padding: 6px 10px;
     border: none;
     border-radius: 10px;
     background-color: #268bd2;
     color: white;
     cursor: pointer;
-   }
+}
 
-   /* Bulle avec l'heure en dessous */
-   .message {
-    display: flex;
-    flex-direction: column;
-    width: fit-content;
-   }
+#message-contact,
+#message-salon {
+    font-size: 0.85em;
+    margin: 0 0 8px 0;
+}
 
-   .heure {
-    font-size: 0.7em;
-    opacity: 0.7;
-    align-self: flex-end;
-   }
+/* Contact ou salon sélectionné */
+.liste-contacts button.actif {
+    background-color: #268bd2;
+    color: white;
+}
+
+/* Conversation vide */
+#liste-messages .vide {
+    margin: auto;
+    color: #666;
+    font-style: italic;
+}

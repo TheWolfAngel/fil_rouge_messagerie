@@ -13,9 +13,12 @@
 
   
     <body>
-      <h1>
-        Message
-      </h1>
+      <h1>Message</h1>
+      <p id="bienvenue"></p>
+      <button id="bouton-deconnexion">
+       Se déconnecter
+      </button>
+
        <div class="messagerie">
         <aside class="colonne-gauche">
     <section>  
@@ -25,21 +28,32 @@
           liste des contacts
         </h3>
         <details open>
-          <summary>contacts</summary>
+          <summary>
+            mes contacts
+          </summary>
 
+          <!-- Ajouter un contact par son nom -->
           <form id="form-ajout-contact" class="ajout-contact">
-            <input id="champ-ajout-contact" type="text" placeholder="Username à ajouter" autocomplete="off">
+            <input id="champ-ajout-contact" type="text" placeholder="Nom à ajouter" autocomplete="off">
             <button type="submit">Ajouter</button>
           </form>
           <p id="message-contact"></p>
-          
-          <ul class="liste-contacts" id="liste-contacts">
-            <li>Chargement...</li>
-            
+
+          <ul class="liste-contacts" id="liste-mes-contacts">
+             <li>Chargement...</li>
           </ul>
         </details>
-      
-       
+
+        <details>
+          <summary>
+            tous les utilisateurs
+          </summary>
+          <ul class="liste-contacts" id="liste-contacts">
+             <li>chargement des utilisateur...</li>
+          </ul>
+        </details>
+
+
         </div>
     </section>
 
@@ -49,19 +63,16 @@
         liste des salons
       </h2>
 
-      <!--Creer un salon public -->
+      <!-- Créer un salon public -->
       <form id="form-salon" class="ajout-contact">
         <input id="champ-salon" type="text" placeholder="Nom du nouveau salon" autocomplete="off">
-        <button type="submit">Creer</button>
+        <button type="submit">Créer</button>
       </form>
-      <p id="mssage-salon"></p>
+      <p id="message-salon"></p>
 
-      <ul class="liste-contacts" id="listte-salons">
-        <li>Chargement</li>
+      <ul class="liste-contacts" id="liste-salons">
+        <li>Chargement...</li>
       </ul>
-
-
-       
       </div>
     </section>
     <section>
@@ -74,10 +85,8 @@
     </section>
   </aside>
      <section class="colonne-droite section">
-            <h2 id="titre-conversation">Choisis un contact</h2>
-            <div id="liste-messages">
-              <p>Choisis un contact à gauche, ou ajoute quelqu'un avec son username.</p>
-            </div>
+            <h2 id="nom-contact">Sélectionne un contact</h2>
+            <div id="liste-messages"></div>
 
             <form id="formulaire-message" class="barre-message">
               <input type="text" id="champ-message"
@@ -92,10 +101,8 @@
             
         </section>
         </div>
-      <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-      <script src="supabase.js"></script>
-      <script src="messagerie.js"></script>
-       
+
+        <script type="module" src="messagerie.js"></script>
     </body>
   
 
